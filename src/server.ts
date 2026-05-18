@@ -18,6 +18,10 @@ app.get("/health", (_req, res) => {
   res.json({ ok: true, service: "demo-backend" });
 });
 console.log("this is my backend")
+console.log("this is my backend")
+console.log("this is my backend")
+console.log("this is my backend")
+console.log("this is my backend")
 app.use("/api/items", itemsRouter);
 
 app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
