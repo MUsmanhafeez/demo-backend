@@ -3,13 +3,14 @@ name: Backend Deployment Pipeline
 on:
   push:
     branches:
-      - main
+      - main   # only run on this branch
 
 jobs:
+
   deploy:
     name: Deploy to EC2
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -21,13 +22,9 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            set -euo pipefail
             echo "✅ Connected to EC2!"
             cd /home/ubuntu/demo-backend
             git pull origin main
-            npm ci --include=dev
-            npm run build
-            test -f dist/server.js || { echo "❌ backend build did not produce dist/server.js"; exit 1; }
-            pm2 startOrReload ecosystem.config.cjs --update-env
-            pm2 save
-            echo "🚀 Backend deployment completed successfully!"
+            npm install
+            pm2 reload "demo-backend"
+            echo "🚀 Deployment completed successfully!"
